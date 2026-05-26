@@ -73,6 +73,11 @@
   font-weight: 300;
   margin: 0;
 }
+.career-story p {
+  color: rgba(255, 255, 255, 0.92);
+  font-weight: 400;
+  opacity: 1;
+}
 .career-info-in {
   display: flex;
   width: 40%;
