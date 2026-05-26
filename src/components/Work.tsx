@@ -1,6 +1,6 @@
 import "./styles/Work.css";
 import "./styles/WorkDetail.css";
-import { useRef, useState } from "react";
+import { useState } from "react";
 import { createPortal } from "react-dom";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -11,66 +11,57 @@ import WorkDetailBlock from "./WorkDetailBlock";
 gsap.registerPlugin(useGSAP, ScrollTrigger);
 
 const Work = () => {
-  const sectionRef = useRef<HTMLDivElement | null>(null);
-  const containerRef = useRef<HTMLDivElement | null>(null);
-  const flexRef = useRef<HTMLDivElement | null>(null);
   const [selectedWorkId, setSelectedWorkId] = useState<string | null>(null);
   const selectedWork = workItems.find((item) => item.id === selectedWorkId);
 
-  useGSAP(
-    () => {
-      const section = sectionRef.current;
-      const container = containerRef.current;
-      const flex = flexRef.current;
+  useGSAP(() => {
+  let translateX: number = 0;
 
-      if (!section || !container || !flex) return;
+  function setTranslateX() {
+    const box = document.getElementsByClassName("work-box");
+    const rectLeft = document
+      .querySelector(".work-container")!
+      .getBoundingClientRect().left;
+    const rect = box[0].getBoundingClientRect();
+    const parentWidth = box[0].parentElement!.getBoundingClientRect().width;
+    let padding: number =
+      parseInt(window.getComputedStyle(box[0]).padding) / 2;
+    translateX = rect.width * box.length - (rectLeft + parentWidth) + padding;
+  }
 
-      const getTranslateX = () => {
-        const flexStyle = window.getComputedStyle(flex);
-        const marginLeft = parseFloat(flexStyle.marginLeft) || 0;
-        const overflowWidth = flex.scrollWidth - container.clientWidth;
+  setTranslateX();
 
-        return Math.max(0, overflowWidth + Math.abs(Math.min(marginLeft, 0)));
-      };
-
-      gsap.set(flex, {
-        force3D: true,
-        x: 0,
-      });
-
-      const tween = gsap.to(flex, {
-        x: () => -getTranslateX(),
-        ease: "none",
-        scrollTrigger: {
-          trigger: section,
-          start: "top top",
-          end: () => `+=${getTranslateX()}`,
-          scrub: true,
-          pin: true,
-          anticipatePin: 1,
-          invalidateOnRefresh: true,
-          id: "work",
-          pinReparent: window.innerWidth <= 1024,
-        },
-      });
-
-      return () => {
-        tween.scrollTrigger?.kill();
-        tween.kill();
-        ScrollTrigger.getById("work")?.kill();
-      };
+  let timeline = gsap.timeline({
+    scrollTrigger: {
+      trigger: ".work-section",
+      start: "top top",
+      end: `+=${translateX}`, // Use actual scroll width
+      scrub: true,
+      pin: true,
+      id: "work",
     },
-    { scope: sectionRef }
-  );
+  });
+
+  timeline.to(".work-flex", {
+    x: -translateX,
+    ease: "none",
+  });
+
+  // Clean up (optional, good practice)
+  return () => {
+    timeline.kill();
+    ScrollTrigger.getById("work")?.kill();
+  };
+}, []);
 
   return (
     <>
-      <div className="work-section" id="work" ref={sectionRef}>
-        <div className="work-container section-container" ref={containerRef}>
+      <div className="work-section" id="work">
+        <div className="work-container section-container">
           <h2>
             My <span>Work</span>
           </h2>
-          <div className="work-flex" ref={flexRef}>
+          <div className="work-flex">
             {workItems.map((item) => (
               <button
                 key={item.id}
