@@ -2,6 +2,9 @@
   margin-top: 100px;
   font-size: 70px;
   font-weight: 500;
+  position: relative;
+  z-index: 2;
+  flex-shrink: 0;
 }
 .work-section h2 > span {
   color: var(--accentColor);
@@ -9,8 +12,8 @@
 .work-section {
   transition: 0s;
   min-height: 100vh;
+  min-height: 100svh;
   box-sizing: border-box;
-  will-change: transform;
   overflow: hidden;
 }
 .work-container {
@@ -19,6 +22,7 @@
   flex-direction: column;
   height: 100%;
   min-height: 100vh;
+  min-height: 100svh;
   align-content: stretch;
 }
 .work-flex {
@@ -30,6 +34,9 @@
   padding-right: 120px;
   position: relative;
   overflow: visible;
+  backface-visibility: hidden;
+  transform: translateZ(0);
+  will-change: transform;
 }
 .work-box {
   padding: 60px 80px;
