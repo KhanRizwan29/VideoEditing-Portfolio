@@ -1,0 +1,406 @@
+.work-detail-page {
+  height: 100vh;
+  overflow-y: auto;
+  overflow-x: hidden;
+  background: radial-gradient(circle at top left, rgba(194, 164, 255, 0.12), transparent 28%),
+    radial-gradient(circle at bottom right, rgba(194, 164, 255, 0.06), transparent 32%),
+    #0b080c;
+  color: #eae5ec;
+}
+
+.work-detail-inline {
+  height: auto;
+  min-height: 100vh;
+  overflow: visible;
+}
+
+.work-detail-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  height: 100vh;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 28px;
+  overflow: hidden;
+  background: rgba(5, 4, 8, 0.42);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  box-sizing: border-box;
+  animation: workDetailBackdropIn 0.32s ease-out both;
+}
+
+.work-detail-container {
+  min-height: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  padding: 120px 24px 80px;
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+  box-sizing: border-box;
+}
+
+.work-detail-modal .work-detail-container {
+  position: relative;
+  width: min(150vh, calc(100vw - 56px));
+  max-width: 1400px;
+  aspect-ratio: 16 / 9;
+  min-height: 0;
+  padding: 0;
+}
+
+.work-detail-back {
+  margin-bottom: 32px;
+}
+
+.work-detail-modal .work-detail-back {
+  position: absolute;
+  top: 18px;
+  right: 18px;
+  z-index: 2;
+  margin: 0;
+}
+
+
+.work-detail-back a {
+  color: #eae5ec;
+  font-size: 16px;
+  text-decoration: none;
+  opacity: 0.9;
+}
+
+.work-detail-back button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: #eae5ec;
+  font-size: 16px;
+  text-decoration: none;
+  opacity: 0.9;
+  appearance: none;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.04);
+  padding: 10px 18px;
+  font: inherit;
+  cursor: pointer;
+  transition: color 0.2s ease, border-color 0.2s ease, background 0.2s ease, transform 0.2s ease;
+}
+
+.work-detail-back button.work-detail-close-button {
+  width: 56px;
+  height: 56px;
+  padding: 0;
+  font-size: 32px;
+}
+
+.work-detail-close-button svg {
+  width: 32px;
+  height: 32px;
+  stroke-width: 2.3;
+}
+
+.work-detail-back a:hover {
+  color: var(--accentColor);
+}
+
+.work-detail-back button:hover {
+  color: var(--accentColor);
+  border-color: rgba(194, 164, 255, 0.5);
+  background: rgba(194, 164, 255, 0.08);
+}
+
+.work-detail-back button:focus-visible {
+  outline: 2px solid var(--accentColor);
+  outline-offset: 3px;
+}
+
+.work-detail-card {
+  width: 100%;
+  max-width: 980px;
+  margin: 0 auto;
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  padding: 50px;
+  background: rgba(6, 4, 9, 0.95);
+  box-shadow: 0 24px 80px rgba(0, 0, 0, 0.25);
+  border-radius: 24px;
+  box-sizing: border-box;
+}
+
+.work-detail-modal .work-detail-card {
+  height: 100%;
+  max-width: none;
+  overflow-y: auto;
+  border-radius: 18px;
+  padding: 38px;
+  animation: workDetailCardIn 0.42s cubic-bezier(0.16, 1, 0.3, 1) both;
+  transform-origin: center;
+}
+
+.work-detail-modal .work-detail-header {
+  padding-right: 150px;
+}
+
+.work-detail-modal .work-detail-video-feed {
+  position: relative;
+  height: min(58vh, 560px);
+  display: block;
+  margin-top: 34px;
+  perspective: 1200px;
+  perspective-origin: 50% 46%;
+  overflow: hidden;
+}
+
+.work-detail-modal .work-detail-video-feed::before,
+.work-detail-modal .work-detail-video-feed::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  z-index: 2;
+  width: 18%;
+  pointer-events: none;
+}
+
+.work-detail-modal .work-detail-video-feed::before {
+  left: 0;
+  background: linear-gradient(90deg, rgba(6, 4, 9, 0.95), transparent);
+}
+
+.work-detail-modal .work-detail-video-feed::after {
+  right: 0;
+  background: linear-gradient(270deg, rgba(6, 4, 9, 0.95), transparent);
+}
+
+.work-detail-modal .work-detail-video-card {
+  --carousel-radius: min(32vw, 390px);
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: min(17vw, 178px);
+  max-width: 178px;
+  min-width: 126px;
+  transform:
+    translate(-50%, -50%)
+    rotateY(calc((360deg / var(--video-count)) * var(--video-index)))
+    translateZ(var(--carousel-radius));
+  animation: workDetailCarouselSpin 28s linear infinite;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  border-radius: 18px;
+  box-shadow:
+    0 10px 16px rgba(194, 164, 255, 0.16),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.04);
+}
+
+.work-detail-modal .work-detail-video-card::after {
+  content: "";
+  position: absolute;
+  left: 14%;
+  right: 14%;
+  bottom: -8px;
+  height: 14px;
+  background:
+    radial-gradient(ellipse at center, rgba(194, 164, 255, 0.34), rgba(255, 255, 255, 0.08) 40%, transparent 72%);
+  filter: blur(5px);
+  transform: translateZ(-1px);
+  pointer-events: none;
+}
+
+.work-detail-modal .work-detail-video-card::before {
+  content: none;
+}
+
+@keyframes workDetailCarouselSpin {
+  from {
+    transform:
+      translate(-50%, -50%)
+      rotateY(calc((360deg / var(--video-count)) * var(--video-index)))
+      translateZ(var(--carousel-radius));
+  }
+  to {
+    transform:
+      translate(-50%, -50%)
+      rotateY(calc((360deg / var(--video-count)) * var(--video-index) - 360deg))
+      translateZ(var(--carousel-radius));
+  }
+}
+
+@keyframes workDetailBackdropIn {
+  from {
+    opacity: 0;
+    backdrop-filter: blur(0);
+    -webkit-backdrop-filter: blur(0);
+  }
+  to {
+    opacity: 1;
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+  }
+}
+
+@keyframes workDetailCardIn {
+  from {
+    opacity: 0;
+    transform: translateY(18px) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .work-detail-modal,
+  .work-detail-modal .work-detail-card,
+  .work-detail-modal .work-detail-video-card {
+    animation: none;
+  }
+}
+
+.work-detail-header span {
+  display: inline-block;
+  margin-bottom: 20px;
+  font-size: 44px;
+  font-weight: 600;
+  color: var(--accentColor);
+}
+
+.work-detail-header h2 {
+  font-size: 56px;
+  margin: 0;
+  line-height: 1.05;
+  padding-right: 10px;
+}
+
+.work-detail-category,
+.work-detail-tech {
+  margin: 16px 0 0;
+  font-size: 18px;
+  color: #adacac;
+  font-weight: 200;
+}
+
+.work-detail-video-feed {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 24px;
+  margin-top: 56px;
+}
+
+.work-detail-video-card {
+  width: 100%;
+  aspect-ratio: 9 / 16;
+  overflow: hidden;
+  border-radius: 24px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.02), 0 24px 80px rgba(0, 0, 0, 0.18);
+}
+
+.work-detail-video-card video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+@media only screen and (max-width: 1000px) {
+  .work-detail-card {
+    padding: 36px;
+  }
+
+  .work-detail-header h2 {
+    font-size: 48px;
+  }
+
+  .work-detail-header span {
+    font-size: 32px;
+  }
+}
+
+@media only screen and (max-width: 720px) {
+  .work-detail-container {
+    padding: 100px 16px 64px;
+  }
+
+  .work-detail-card {
+    padding: 28px;
+    border-radius: 20px;
+  }
+
+  .work-detail-header h2 {
+    font-size: 34px;
+  }
+
+  .work-detail-header span {
+    font-size: 28px;
+  }
+
+  .work-detail-video-feed {
+    gap: 18px;
+    margin-top: 44px;
+  }
+
+  .work-detail-modal {
+    padding: 16px;
+  }
+
+  .work-detail-modal .work-detail-container {
+    width: calc(100vw - 32px);
+    max-height: calc(100vh - 32px);
+    aspect-ratio: auto;
+  }
+
+  .work-detail-modal .work-detail-card {
+    max-height: calc(100vh - 32px);
+    padding: 28px;
+  }
+
+  .work-detail-modal .work-detail-header {
+    padding-right: 0;
+    padding-top: 52px;
+  }
+
+  .work-detail-modal .work-detail-video-feed {
+    height: 460px;
+    perspective: 900px;
+  }
+
+  .work-detail-modal .work-detail-video-card {
+    --carousel-radius: 250px;
+    width: 126px;
+  }
+}
+
+@media only screen and (max-width: 520px) {
+  .work-detail-container {
+    padding: 96px 12px 56px;
+  }
+
+  .work-detail-card {
+    padding: 22px;
+    border-radius: 18px;
+  }
+
+  .work-detail-header h2 {
+    font-size: 28px;
+  }
+
+  .work-detail-header span {
+    font-size: 24px;
+  }
+
+  .work-detail-video-feed {
+    gap: 14px;
+    margin-top: 32px;
+  }
+
+  .work-detail-back a {
+    font-size: 15px;
+  }
+}
