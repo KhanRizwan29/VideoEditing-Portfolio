@@ -1,7 +1,8 @@
 .loading-screen {
   position: fixed;
-  width: 100vw;
-  height: var(--vh);
+  inset: 0;
+  width: 100%;
+  min-height: var(--vh);
   /* background-image: linear-gradient(#cbb1ff, #d8c4ff); */
   background-color: #eae5ec;
   z-index: 999999999;
@@ -10,7 +11,7 @@
   justify-content: center;
 }
 .loading-button {
-  padding: 20px 50px;
+  padding: clamp(16px, 4vw, 20px) clamp(32px, 10vw, 50px);
   border-radius: 100px;
   background-color: #000;
   overflow: hidden;
@@ -42,7 +43,7 @@
 }
 
 .loading-wrap {
-  --Lsize: 145px;
+  --Lsize: clamp(120px, 36vw, 145px);
   padding: 6px;
   position: relative;
   min-width: 0px;
@@ -63,7 +64,7 @@
   transform: scale(1);
   min-width: calc(100vw + 5000px);
   border-radius: 5000px;
-  min-height: calc(100vh + 500px);
+  min-height: calc(100dvh + 500px);
   box-shadow: none;
 }
 .loading-clicked .loading-button {
@@ -71,8 +72,8 @@
 }
 .loading-hover {
   background-color: #a87cff;
-  width: 250px;
-  height: 120px;
+  width: min(250px, 80vw);
+  height: min(120px, 38vw);
   position: absolute;
   top: var(--mouse-y);
   left: var(--mouse-x);
@@ -192,11 +193,13 @@
   transform: translateX(-50%);
   top: 0;
   color: var(--backgroundColor);
+  gap: 16px;
 }
 .loader-title {
   font-weight: 700;
-  font-size: 14px;
+  font-size: clamp(13px, 4vw, 14px);
   letter-spacing: 0.2px;
+  overflow-wrap: anywhere;
 }
 @keyframes blink {
   0% {
@@ -224,7 +227,7 @@
 }
 
 .loaderGame-container {
-  width: 200px;
+  width: min(200px, 38vw);
   transition: 0.3s;
   height: 100px;
   overflow: hidden;
@@ -284,12 +287,12 @@
   width: 100%;
   transform: translateY(-50%);
   color: var(--backgroundColor);
-  font-size: 60px;
+  font-size: clamp(34px, 14vw, 60px);
   font-weight: 600;
   text-transform: uppercase;
 }
 .loading-marquee span {
-  padding: 0px 50px;
+  padding: 0px clamp(28px, 10vw, 50px);
   position: relative;
 }
 .loading-marquee span::before {
@@ -332,7 +335,7 @@
 
 @media only screen and (min-width: 1400px) {
   .loading-wrap {
-    --Lsize: 210px;
+    --Lsize: clamp(145px, 14vw, 210px);
   }
   .loading-button {
     padding: 30px 70px;
@@ -342,7 +345,7 @@
     left: 70px;
   }
   .loading-marquee {
-    font-size: 100px;
+    font-size: clamp(60px, 7vw, 100px);
   }
 }
 @media only screen and (min-width: 500px) {

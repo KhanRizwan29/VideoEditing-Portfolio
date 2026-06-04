@@ -13,10 +13,10 @@
   padding: 50px 0px;
   padding-bottom: 0;
   width: 500px;
-  max-width: calc(100% - 15px);
+  max-width: 100%;
 }
 .about-me h3 {
-  font-size: 25px;
+  font-size: clamp(18px, 5vw, 25px);
   text-transform: uppercase;
   letter-spacing: 7px;
   font-weight: 400;
@@ -24,9 +24,9 @@
 }
 
 .about-me p {
-  font-size: 33px;
+  font-size: clamp(24px, 7vw, 33px);
   font-weight: 600;
-  line-height: 36px;
+  line-height: 1.1;
   letter-spacing: 1px;
 }
 
@@ -59,8 +59,8 @@
     width: 50%;
   }
   .about-me p {
-    font-size: 1.9vw;
-    line-height: 2.3vw;
+    font-size: clamp(1.55rem, 1.9vw, 2.5rem);
+    line-height: 1.18;
   }
 }
 @media only screen and (min-width: 1950px) {
