@@ -15,44 +15,58 @@ const Work = () => {
   const selectedWork = workItems.find((item) => item.id === selectedWorkId);
 
   useGSAP(() => {
-  let translateX: number = 0;
+    const matchMedia = gsap.matchMedia();
 
-  function setTranslateX() {
-    const box = document.getElementsByClassName("work-box");
-    const rectLeft = document
-      .querySelector(".work-container")!
-      .getBoundingClientRect().left;
-    const rect = box[0].getBoundingClientRect();
-    const parentWidth = box[0].parentElement!.getBoundingClientRect().width;
-    let padding: number =
-      parseInt(window.getComputedStyle(box[0]).padding) / 2;
-    translateX = rect.width * box.length - (rectLeft + parentWidth) + padding;
-  }
+    matchMedia.add("(min-width: 1026px)", () => {
+      const boxes = gsap.utils.toArray<HTMLElement>(".work-box");
+      const workFlex = document.querySelector<HTMLElement>(".work-flex");
+      const workContainer = document.querySelector<HTMLElement>(".work-container");
 
-  setTranslateX();
+      if (!boxes.length || !workFlex || !workContainer) {
+        return;
+      }
 
-  let timeline = gsap.timeline({
-    scrollTrigger: {
-      trigger: ".work-section",
-      start: "top top",
-      end: `+=${translateX}`, // Use actual scroll width
-      scrub: true,
-      pin: true,
-      id: "work",
-    },
-  });
+      const setTranslateX = () => {
+        const containerLeft = workContainer.getBoundingClientRect().left;
+        const parentWidth = workFlex.getBoundingClientRect().width;
+        const firstBox = boxes[0];
+        const boxWidth = firstBox.getBoundingClientRect().width;
+        const padding = parseInt(window.getComputedStyle(firstBox).padding) / 2;
 
-  timeline.to(".work-flex", {
-    x: -translateX,
-    ease: "none",
-  });
+        return boxWidth * boxes.length - (containerLeft + parentWidth) + padding;
+      };
 
-  // Clean up (optional, good practice)
-  return () => {
-    timeline.kill();
-    ScrollTrigger.getById("work")?.kill();
-  };
-}, []);
+      let translateX = Math.max(0, setTranslateX());
+
+      const timeline = gsap.timeline({
+        scrollTrigger: {
+          trigger: ".work-section",
+          start: "top top",
+          end: () => `+=${translateX}`,
+          scrub: true,
+          pin: true,
+          id: "work",
+          invalidateOnRefresh: true,
+          onRefresh: () => {
+            translateX = Math.max(0, setTranslateX());
+          },
+        },
+      });
+
+      timeline.to(".work-flex", {
+        x: () => -translateX,
+        ease: "none",
+      });
+
+      return () => {
+        timeline.kill();
+        ScrollTrigger.getById("work")?.kill();
+        gsap.set(".work-flex", { clearProps: "transform" });
+      };
+    });
+
+    return () => matchMedia.revert();
+  }, []);
 
   return (
     <>

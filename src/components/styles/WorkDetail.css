@@ -1,5 +1,6 @@
 .work-detail-page {
   height: 100vh;
+  height: 100dvh;
   overflow-y: auto;
   overflow-x: hidden;
   background: radial-gradient(circle at top left, rgba(194, 164, 255, 0.12), transparent 28%),
@@ -19,7 +20,9 @@
   inset: 0;
   z-index: 1000;
   height: 100vh;
+  height: 100dvh;
   min-height: 100vh;
+  min-height: 100dvh;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -272,7 +275,7 @@
 }
 
 .work-detail-header h2 {
-  font-size: 56px;
+  font-size: clamp(34px, 4.4vw, 56px);
   margin: 0;
   line-height: 1.05;
   padding-right: 10px;
@@ -288,7 +291,7 @@
 
 .work-detail-video-feed {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(260px, 100%), 1fr));
   gap: 24px;
   margin-top: 56px;
 }
@@ -353,11 +356,13 @@
   .work-detail-modal .work-detail-container {
     width: calc(100vw - 32px);
     max-height: calc(100vh - 32px);
+    max-height: calc(100dvh - 32px);
     aspect-ratio: auto;
   }
 
   .work-detail-modal .work-detail-card {
     max-height: calc(100vh - 32px);
+    max-height: calc(100dvh - 32px);
     padding: 28px;
   }
 
@@ -367,13 +372,27 @@
   }
 
   .work-detail-modal .work-detail-video-feed {
-    height: 460px;
-    perspective: 900px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(150px, 100%), 1fr));
+    gap: 14px;
+    height: auto;
+    perspective: none;
+    overflow: visible;
+  }
+  .work-detail-modal .work-detail-video-feed::before,
+  .work-detail-modal .work-detail-video-feed::after {
+    content: none;
   }
 
   .work-detail-modal .work-detail-video-card {
-    --carousel-radius: 250px;
-    width: 126px;
+    position: relative;
+    top: auto;
+    left: auto;
+    width: 100%;
+    min-width: 0;
+    max-width: none;
+    transform: none;
+    animation: none;
   }
 }
 
